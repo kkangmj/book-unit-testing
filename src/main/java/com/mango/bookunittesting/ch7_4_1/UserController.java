@@ -1,9 +1,9 @@
-package com.mango.bookunittesting.ch7_2_5;
+package com.mango.bookunittesting.ch7_4_1;
 
 
 import org.springframework.stereotype.Service;
 
-@Service("userController7_2_5")
+@Service("userController7_4_1")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -14,14 +14,21 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    public void changeEmail(int userId, String newEmail) {
+    public String changeEmail(int userId, String newEmail) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Company company = companyRepository.getCompany();
 
+        String error = user.canChangeEmail();
+        if (error != null) {
+            return error;
+        }
+
+        Company company = companyRepository.getCompany();
         user.changeEmail(newEmail, company);
 
         companyRepository.saveCompany(company);
         userRepository.save(user);
         messageBus.sendEmailChangedMessage(userId, newEmail);
+
+        return "OK";
     }
 }

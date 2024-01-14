@@ -2,7 +2,7 @@ package com.mango.bookunittesting.ch7_2_4;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("userController7_2_4")
 public class UserController {
 
     private final UserRepository userRepository;

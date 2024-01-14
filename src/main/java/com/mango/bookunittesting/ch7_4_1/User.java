@@ -1,10 +1,10 @@
-package com.mango.bookunittesting.ch7_2_5;
+package com.mango.bookunittesting.ch7_4_1;
 
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Entity(name = "tb_user7_2_5")
+@Entity(name = "tb_user7_4_1")
 public class User {
 
     @Id
@@ -17,6 +17,9 @@ public class User {
     @Column
     private UserType type;
 
+    @Column
+    private boolean isEmailConfirmed;
+
     public User() {
     }
 
@@ -26,7 +29,13 @@ public class User {
         this.type = type;
     }
 
+    public String canChangeEmail() {
+        return isEmailConfirmed ? "Can't change a confirmed email" : null;
+    }
+
     public void changeEmail(String newEmail, Company company) {
+        assert canChangeEmail() == null;
+
         if (Objects.equals(email, newEmail)) {
             return;
         }

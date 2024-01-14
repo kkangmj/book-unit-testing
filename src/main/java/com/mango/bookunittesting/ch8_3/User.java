@@ -1,10 +1,12 @@
-package com.mango.bookunittesting.ch7_2_5;
+package com.mango.bookunittesting.ch8_3;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "tb_user7_2_5")
+@Entity(name = "tb_user8_3")
 public class User {
 
     @Id
@@ -17,16 +19,27 @@ public class User {
     @Column
     private UserType type;
 
+    @Column
+    private boolean isEmailConfirmed;
+
+    @Transient
+    private final List<EmailChangedEvent> emailChangedEvents = new ArrayList<>();
+
     public User() {
     }
 
-    public User(int userId, String email, UserType type) {
-        this.userId = userId;
+    public User(String email, UserType type) {
         this.email = email;
         this.type = type;
     }
 
+    public String canChangeEmail() {
+        return isEmailConfirmed ? "Can't change a confirmed email" : null;
+    }
+
     public void changeEmail(String newEmail, Company company) {
+        assert canChangeEmail() == null;
+
         if (Objects.equals(email, newEmail)) {
             return;
         }
@@ -40,6 +53,7 @@ public class User {
 
         this.email = newEmail;
         this.type = newType;
+        emailChangedEvents.add(new EmailChangedEvent(userId, newEmail));
     }
 
     public int getUserId() {
@@ -52,5 +66,9 @@ public class User {
 
     public UserType getType() {
         return type;
+    }
+
+    public List<EmailChangedEvent> getEmailChangedEvents() {
+        return emailChangedEvents;
     }
 }

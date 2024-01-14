@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Entity(name = "tb_user")
+@Entity(name = "tb_user7_2_4")
 public class User {
 
     @Id
