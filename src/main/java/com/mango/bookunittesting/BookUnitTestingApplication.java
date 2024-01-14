@@ -1,13 +1,13 @@
-package com.mango.springbootboilerplate;
+package com.mango.bookunittesting;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SimpleSpringBootBoilerplateApplication {
+public class BookUnitTestingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SimpleSpringBootBoilerplateApplication.class, args);
+		SpringApplication.run(BookUnitTestingApplication.class, args);
 	}
 
 }

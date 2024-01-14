@@ -1,10 +1,10 @@
-package com.mango.springbootboilerplate;
+package com.mango.bookunittesting;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringBootBoilerplateApplicationTests {
+class BookUnitTestingTests {
 
 	@Test
 	void contextLoads() {
