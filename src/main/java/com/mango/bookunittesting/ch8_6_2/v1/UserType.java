@@ -1,4 +1,4 @@
-package com.mango.bookunittesting.ch8_6_2;
+package com.mango.bookunittesting.ch8_6_2.v1;
 
 public enum UserType {
     Customer(1), Employee(2);

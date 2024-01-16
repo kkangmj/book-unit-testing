@@ -1,4 +1,4 @@
-package com.mango.bookunittesting.ch8_6_2;
+package com.mango.bookunittesting.ch8_6_2.v1;
 
 import jakarta.persistence.*;
 import org.slf4j.Logger;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "tb_user8_6_1")
+@Entity(name = "tb_user8_6_2_v1")
 public class User {
 
     @Id
@@ -28,7 +28,7 @@ public class User {
     private final List<EmailChangedEvent> emailChangedEvents = new ArrayList<>();
 
     @Transient
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger("ROOT");
 
     @Transient
     private final IDomainLogger domainLogger = new DomainLogger();
@@ -45,29 +45,29 @@ public class User {
         return isEmailConfirmed ? "Can't change a confirmed email" : null;
     }
 
-public void changeEmail(String newEmail, Company company) {
-    logger.info(String.format("Changing email for user %s to %s", userId, newEmail));
+    public void changeEmail(String newEmail, Company company) {
+        logger.info("Changing email for user {} to {}", userId, newEmail);
 
-    assert canChangeEmail() == null;
+        assert canChangeEmail() == null;
 
-    if (Objects.equals(email, newEmail)) {
-        return;
+        if (Objects.equals(email, newEmail)) {
+            return;
+        }
+
+        UserType newType = company.isEmailCorporate(newEmail) ? UserType.Employee : UserType.Customer;
+
+        if (type != newType) {
+            int delta = newType == UserType.Employee ? 1 : -1;
+            company.changeNumberOfEmployees(delta);
+            domainLogger.userTypeHasChanged(userId, type, newType);
+        }
+
+        this.email = newEmail;
+        this.type = newType;
+        emailChangedEvents.add(new EmailChangedEvent(userId, newEmail));
+
+        logger.info("Email is changed for user {}", userId);
     }
-
-    UserType newType = company.isEmailCorporate(newEmail) ? UserType.Employee : UserType.Customer;
-
-    if (type != newType) {
-        int delta = newType == UserType.Employee ? 1 : -1;
-        company.changeNumberOfEmployees(delta);
-        domainLogger.userTypeHasChanged(userId, type, newType);
-    }
-
-    this.email = newEmail;
-    this.type = newType;
-    emailChangedEvents.add(new EmailChangedEvent(userId, newEmail));
-
-    logger.info(String.format("Email is changed for user %s", userId));
-}
 
     public int getUserId() {
         return userId;

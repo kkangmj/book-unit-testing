@@ -1,15 +1,25 @@
-package com.mango.bookunittesting.ch8_6_2;
+package com.mango.bookunittesting.ch8_6_2.v2;
 
 import java.util.Objects;
 
-public class EmailChangedEvent {
+public class EmailChangedEvent implements DomainEvent {
 
-    public int userId;
-    public String newEmail;
+    private final int userId;
+    private final String newEmail;
 
     public EmailChangedEvent(int userId, String newEmail) {
         this.userId = userId;
         this.newEmail = newEmail;
+    }
+
+    @Override
+    public boolean sendToMessageBus() {
+        return true;
+    }
+
+    @Override
+    public boolean sendToDomainLogger() {
+        return false;
     }
 
     public int getUserId() {
